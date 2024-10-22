@@ -19,6 +19,10 @@ SELECT *
 FROM actor
 HAVING (actor_id % 10) = 0;
 
+#Q5 tEST
+SELECT * 
+FROM film;
+
 #Q5
 SELECT * 
 FROM film
@@ -74,3 +78,58 @@ FROM actor
 GROUP BY last_name
 HAVING COUNT(last_name) >= 2
 ORDER BY COUNT(last_name) DESC;
+
+#Q13 
+SELECT
+	CONCAT(a.first_name, " ", a.last_name) AS full_name,
+	fa.actor_id,
+    COUNT(*)
+FROM film_actor AS fa
+LEFT OUTER JOIN actor AS a #Google Inner Join and Outer Join. JOIN is part of FROM.
+ON fa.actor_id = a.actor_id  #link the team.id to the hero.team_id. Google what ON does later.
+GROUP BY actor_id
+ORDER BY COUNT(*) DESC
+LIMIT 1;
+
+#Q14
+SELECT date_add(r.rental_date, INTERVAL f.rental_duration WEEK) AS "Return Date"
+FROM rental 
+AS r
+RIGHT JOIN inventory
+AS i
+ON r.inventory_id = i.inventory_id
+INNER JOIN film
+AS f
+ON f.film_id = i.film_id
+WHERE (title = "Academy Dinosaur")
+AND (r.return_date IS NULL)
+AND (r.rental_date IS NOT NULL)
+;
+
+#15
+SELECT AVG(length)
+FROM film;
+
+#16
+SELECT 
+	c.name,
+	AVG(length)
+FROM film_category AS fc
+JOIN category AS c
+ON fc.category_id = c.category_id
+RIGHT JOIN film AS f
+ON f.film_id = fc.film_id
+GROUP BY fc.category_id;
+
+#17
+SELECT * 
+FROM film
+HAVING description LIKE "%Robot%";
+
+#18
+SELECT 
+	COUNT(release_year),
+    release_year
+FROM film
+GROUP BY release_year;
+#HAVING release_year LIKE 2010;
